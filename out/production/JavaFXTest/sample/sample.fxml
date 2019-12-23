@@ -5,13 +5,21 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<AnchorPane prefHeight="720" prefWidth="1280" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.Controller">
+<GridPane xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.Controller">
+   <columnConstraints>
+      <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" />
+   </columnConstraints>
+   <rowConstraints>
+      <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
+   </rowConstraints>
    <children>
-      <Button alignment="CENTER" layoutX="614.0" layoutY="348.0" mnemonicParsing="false" onAction="#addText" text="Set text" />
-      <Button alignment="CENTER" layoutX="597.0" layoutY="195.0" mnemonicParsing="false" prefHeight="59.0" prefWidth="87.0" text="Button" />
-      <Label fx:id="labelText" layoutX="597.0" layoutY="112.0" prefHeight="49.0" prefWidth="87.0" textAlignment="CENTER" wrapText="true">
-         <opaqueInsets>
-            <Insets right="20.0" top="10.0" />
-         </opaqueInsets></Label>
+      <AnchorPane prefHeight="720" prefWidth="1280">
+         <children>
+            <Button alignment="CENTER" layoutX="614.0" layoutY="348.0" mnemonicParsing="false" onAction="#addText" text="Set text" />
+            <Button alignment="CENTER" layoutX="599.0" layoutY="247.0" mnemonicParsing="false" prefHeight="59.0" prefWidth="87.0" text="Button" />
+            <Label fx:id="labelText" layoutX="599.0" layoutY="129.0" prefHeight="49.0" prefWidth="87.0" textAlignment="CENTER" wrapText="true" />
+            <TextField fx:id="textField" layoutX="566.0" layoutY="432.0" onAction="#setText" />
+         </children>
+      </AnchorPane>
    </children>
-</AnchorPane>
+</GridPane>
