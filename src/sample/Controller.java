@@ -1,38 +1,46 @@
 package sample;
 
 import javafx.fxml.FXML;
-import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
+import javafx.scene.control.TextArea;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
+import sample.client.ClientGuiModel;
 
 import java.util.Objects;
 
 
 public class Controller
 {
-    @FXML
-    private Label labelText;
-    @FXML
-    private TextField textField;
+    private ClientGuiModel model = new ClientGuiModel();
 
+    @FXML
+    private TextArea messages;
+    @FXML
+    private TextArea users;
+    @FXML
+    private TextArea messageFromUser;
 
-    public void addText()
+    public void sendMessage(KeyEvent keyEvent)
     {
-        System.out.println("Button clicked");
-        labelText.setText("Button clicked " + Math.random());
+
+        if (keyEvent.getCode() == KeyCode.ENTER)
+        {
+            String textFromUser = messageFromUser.getText();
+            if (Objects.equals(textFromUser.trim(), ""))
+            {
+                //nothing to send
+            } else
+            {
+                model.setNewMessage(textFromUser);
+                messages.appendText(textFromUser.trim() + '\n');
+                messageFromUser.setText("");
+            }
+        }
     }
 
-    public void setText()
+    public ClientGuiModel getModel()
     {
-        String textFieldText = textField.getText();
-
-        if (Objects.equals(textFieldText, ""))
-        {
-            labelText.setText("Text field is empty!");
-        }
-        else
-        {
-            labelText.setText(textFieldText);
-            textField.setText("");
-        }
+        return model;
     }
+
 }
