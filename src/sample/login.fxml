@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<GridPane xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.LoginController">
+   <columnConstraints>
+      <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" />
+   </columnConstraints>
+   <rowConstraints>
+      <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
+   </rowConstraints>
+   <children>
+      <AnchorPane prefHeight="720.0" prefWidth="720.0">
+         <children>
+            <Button fx:id="connectToServer" layoutX="309.0" layoutY="428.0" mnemonicParsing="false" onAction="#changeScene" text="Connect to server" textAlignment="CENTER" />
+            <TextField fx:id="serverIP" layoutX="289.0" layoutY="297.0" onAction="#connect" />
+            <Label layoutX="324.0" layoutY="271.0" text="Enter server ip:" textAlignment="CENTER" />
+            <Label layoutX="334.0" layoutY="331.0" text="User name:" textAlignment="CENTER" />
+            <TextField fx:id="tfUserName" layoutX="290.0" layoutY="360.0" onAction="#inputUserName" />
+         </children>
+      </AnchorPane>
+   </children>
+</GridPane>
