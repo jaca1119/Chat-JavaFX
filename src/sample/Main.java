@@ -9,13 +9,17 @@ import javafx.stage.Stage;
 public class Main extends Application {
 
     @Override
-    public void start(Stage primaryStage) throws Exception{
-        Parent root = FXMLLoader.load(getClass().getResource("sample.fxml"));
+    public void start(Stage primaryStage) throws Exception
+    {
         primaryStage.setTitle("Chat application");
-        primaryStage.setScene(new Scene(root, 1280, 720));
+
+        //scene1
+        Parent rootLogin = FXMLLoader.load(getClass().getResource("login.fxml"));
+        Scene loginScene = new Scene(rootLogin, 720, 720);
+
+        primaryStage.setScene(loginScene);
         primaryStage.show();
     }
-
 
     public static void main(String[] args) {
         launch(args);
