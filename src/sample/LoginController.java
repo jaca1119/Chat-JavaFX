@@ -12,6 +12,7 @@ import javafx.scene.control.Tooltip;
 import javafx.stage.Stage;
 
 import java.io.IOException;
+import java.util.Set;
 
 public class LoginController
 {
@@ -22,18 +23,8 @@ public class LoginController
     private TextField tfUserName;
     @FXML
     private Button connectToServer;
-    ServerConnection serverConnection = ServerConnection.getInstance();
 
-
-    public void changeScene(ActionEvent event) throws IOException
-    {
-        Stage primaryStage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-
-        //scene2
-        Parent rootChat = FXMLLoader.load(getClass().getResource("sample.fxml"));
-        Scene chatScene = new Scene(rootChat, 720, 720);
-        primaryStage.setScene(chatScene);
-    }
+    private ServerConnection serverConnection = ServerConnection.getInstance();
 
     public void connect()
     {
@@ -41,6 +32,26 @@ public class LoginController
 
         serverConnection.setIp(ip);
         tfUserName.requestFocus();
+    }
+
+    public void btnConnect(ActionEvent event) throws IOException
+    {
+        String ip = serverIP.getText();
+        String userName = tfUserName.getText();
+
+        if (!ip.equals("") && !userName.equals(""))
+        {
+            serverConnection.setIp(serverIP.getText());
+            serverConnection.setUserName(tfUserName.getText());
+
+            Stage primaryStage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+
+            //scene2
+            Parent rootChat = FXMLLoader.load(getClass().getResource("sample.fxml"));
+            Scene chatScene = new Scene(rootChat, 720, 720);
+            chatScene.getStylesheets().add(getClass().getResource("/css/style.css").toExternalForm());
+            primaryStage.setScene(chatScene);
+        }
     }
 
     public void inputUserName()
