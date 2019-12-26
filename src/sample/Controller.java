@@ -1,21 +1,32 @@
 package sample;
 
+import javafx.application.Platform;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.CheckBox;
 import javafx.scene.control.TextArea;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
+import javafx.stage.Stage;
 import sample.client.Client;
 import sample.client.ClientGuiModel;
 
 
+import java.io.IOException;
 import java.util.Objects;
+import java.util.Set;
 
 
 public class Controller extends Client
 {
     private static final int PORT = 1025;
     private ClientGuiModel model = new ClientGuiModel();
+    private SocketThread socketThread;
 
     @FXML
     private TextArea messages;
@@ -25,10 +36,21 @@ public class Controller extends Client
     private TextArea messageFromUser;
     @FXML
     private Button sendMessage;
+    @FXML
+    private CheckBox checkBox;
+    @FXML
+    private Button btnArrow;
 
     public Controller()
     {
+        System.out.println("Controller constructor");
         run();
+    }
+
+    @FXML
+    public void initialize()
+    {
+        checkBox.setDisable(true);
     }
 
     public void sendMessage(KeyEvent keyEvent)
@@ -62,16 +84,42 @@ public class Controller extends Client
         }
     }
 
+    public void backToLogin(ActionEvent event) throws IOException
+    {
+        stop();
+        Stage primaryStage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+
+        Parent rootChat = FXMLLoader.load(getClass().getResource("login.fxml"));
+        Scene loginScene = new Scene(rootChat, 720, 720);
+
+
+        primaryStage.setScene(loginScene);
+    }
+
+    public void stop()
+    {
+        shouldStop(true);
+        try
+        {
+            connection.close();
+        } catch (IOException e)
+        {
+            e.printStackTrace();
+        }
+    }
+
     @Override
     protected SocketThread getSocketThread()
     {
-        return new GuiSocketThread();
+        SocketThread thread = new GuiSocketThread();
+        thread.setName("Chat thread");
+        return thread;
     }
 
     @Override
     public void run()
     {
-        SocketThread socketThread = getSocketThread();
+        socketThread = getSocketThread();
         socketThread.setDaemon(true);
         socketThread.start();
     }
@@ -121,26 +169,45 @@ public class Controller extends Client
         protected void notifyConnectionStatusChanged(boolean clientConnected)
         {
             connectionStatusChanged(clientConnected);
+
         }
-    }
 
-    private void refreshMessages()
-    {
-        messages.appendText(model.getNewMessage() + '\n');
-    }
+        private void refreshMessages()
+        {
+            messages.appendText(model.getNewMessage() + '\n');
+        }
 
-    private void refreshUsers()
-    {
-        StringBuilder builder = new StringBuilder();
-        model.getAllUserNames().forEach(userName -> {
-            builder.append(userName).append('\n');
-        });
+        private void refreshUsers()
+        {
+            StringBuilder builder = new StringBuilder();
+            model.getAllUserNames().forEach(userName ->
+            {
+                builder.append(userName).append('\n');
+            });
 
-        users.setText(builder.toString());
-    }
+            Platform.runLater(() -> {
+                users.setText(builder.toString());
+            });
+        }
 
-    private void connectionStatusChanged(boolean clientConnected)
-    {
+        private void connectionStatusChanged(boolean clientConnected)
+        {
 //        messageFromUser.setEditable(clientConnected);
+            if (clientConnected)
+            {
+                Platform.runLater(() ->{
+                    checkBox.setSelected(clientConnected);
+                    checkBox.setText("Connected to server");
+                });
+
+            } else
+            {
+                Platform.runLater(() ->{
+                    checkBox.setIndeterminate(true);
+                    checkBox.setText("Not connected to server");
+                });
+
+            }
+        }
     }
 }
