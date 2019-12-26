@@ -14,7 +14,7 @@
    <children>
       <AnchorPane prefHeight="720.0" prefWidth="720.0">
          <children>
-            <Button fx:id="connectToServer" layoutX="309.0" layoutY="428.0" mnemonicParsing="false" onAction="#changeScene" text="Connect to server" textAlignment="CENTER" />
+            <Button fx:id="connectToServer" layoutX="309.0" layoutY="428.0" mnemonicParsing="false" onAction="#btnConnect" text="Connect to server" textAlignment="CENTER" />
             <TextField fx:id="serverIP" layoutX="289.0" layoutY="297.0" onAction="#connect" />
             <Label layoutX="324.0" layoutY="271.0" text="Enter server ip:" textAlignment="CENTER" />
             <Label layoutX="334.0" layoutY="331.0" text="User name:" textAlignment="CENTER" />
