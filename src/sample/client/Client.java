@@ -123,15 +123,27 @@ public class Client
         @Override
         public void run()
         {
+            System.out.println("Client thread run");
             try
             {
                 Socket socket = new Socket(getServerAddress(), getServerPort());
+
+                if (socket.isConnected())
+                {
+                    System.out.println("Connected");
+                }
+                else
+                {
+                    System.out.println("Not connected");
+                }
+
                 connection = new Connection(socket);
                 clientHandshake();
 
                 clientMainLoop();
             } catch (IOException | ClassNotFoundException e)
             {
+                System.out.println("Client run exception");
                 notifyConnectionStatusChanged(false);
             }
 
@@ -162,8 +174,9 @@ public class Client
         protected void clientMainLoop() throws IOException, ClassNotFoundException
         {
 
-            while (true)
+            while (!shouldStop(false))
             {
+                System.out.println("Client main loop");
                 Message message = connection.receive();
 
                 switch (message.getMessageType())
@@ -209,5 +222,10 @@ public class Client
                 Client.this.notify();
             }
         }
+    }
+
+    protected boolean shouldStop(boolean stop)
+    {
+        return stop;
     }
 }
