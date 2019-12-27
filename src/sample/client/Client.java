@@ -6,6 +6,7 @@ import sample.ConsoleHelper;
 import sample.Message;
 import sample.MessageType;
 
+import java.io.File;
 import java.io.IOException;
 import java.net.Socket;
 import java.util.Objects;
@@ -190,6 +191,9 @@ public class Client
                     case USER_REMOVED:
                         informAboutDeletingNewUser(message.getData());
                         break;
+                    case IMAGE:
+                        processIncomingMessage(message.getImage());
+                        break;
 
                     default:
                         throw new IOException("Unexpected message type");
@@ -201,6 +205,11 @@ public class Client
         protected void processIncomingMessage(String message)
         {
             ConsoleHelper.writeMessage(message);
+        }
+
+        protected void processIncomingMessage(byte[] image)
+        {
+            ConsoleHelper.writeMessage("Image length: " + image.length);
         }
 
         protected void informAboutAddingNewUser(String userName)
