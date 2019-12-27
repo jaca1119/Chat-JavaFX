@@ -9,6 +9,7 @@ public class ClientGuiModel
     private final Set<String> allUserNames = new HashSet<>();
 
     private String newMessage;
+    private byte[] newImage;
 
     public void addUser(String userName)
     {
@@ -33,5 +34,15 @@ public class ClientGuiModel
     public void setNewMessage(String newMessage)
     {
         this.newMessage = newMessage;
+    }
+
+    public byte[] getNewImage()
+    {
+        return newImage;
+    }
+
+    public void setNewImage(byte[] newImage)
+    {
+        this.newImage = newImage;
     }
 }
