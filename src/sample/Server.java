@@ -143,6 +143,12 @@ public class Server
 
                     sendBroadcastMessage(textMessage);
                 }
+                else if (message.getMessageType() == MessageType.IMAGE)
+                {
+                    Message imageMessage = new Message(MessageType.IMAGE, message.getImage());
+
+                    sendBroadcastMessage(imageMessage);
+                }
                 else
                 {
                     ConsoleHelper.writeMessage("Error with message type");
