@@ -10,14 +10,17 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.TextArea;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
+import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import sample.client.Client;
 import sample.client.ClientGuiModel;
 
 
-import java.io.IOException;
+import java.io.*;
 import java.util.Objects;
 import java.util.Set;
 
@@ -40,17 +43,15 @@ public class Controller extends Client
     private CheckBox checkBox;
     @FXML
     private Button btnArrow;
+    @FXML
+    private Button btnSendImage;
+    @FXML
+    private ImageView ivImage;
 
     public Controller()
     {
         System.out.println("Controller constructor");
         run();
-    }
-
-    @FXML
-    public void initialize()
-    {
-        checkBox.setDisable(true);
     }
 
     public void sendMessage(KeyEvent keyEvent)
@@ -84,6 +85,47 @@ public class Controller extends Client
         }
     }
 
+    public void sendImage()
+    {
+        FileChooser fileChooser = new FileChooser();
+
+        File file = fileChooser.showOpenDialog(btnSendImage.getScene().getWindow());
+
+        System.out.println(file);
+        byte[] imageInBytes = new byte[(int) file.length()];
+
+        try (FileInputStream inputStream = new FileInputStream(file);
+             BufferedInputStream bufferedInputStream = new BufferedInputStream(inputStream))
+        {
+//            ivImage.setImage(new Image(inputStream));
+
+            int length = bufferedInputStream.read(imageInBytes, 0, imageInBytes.length);
+            System.out.println("Image size in buff " + length);
+            System.out.println("Byte array size " + imageInBytes.length);
+            System.out.println("File length " + file.length());
+
+            connection.send(new Message(MessageType.IMAGE, imageInBytes));
+
+            Message message = new Message(MessageType.IMAGE, imageInBytes);
+
+            ByteArrayOutputStream byteOutputStream = new ByteArrayOutputStream();
+            ObjectOutputStream objectOutputStream = new ObjectOutputStream(byteOutputStream);
+
+            objectOutputStream.writeObject(message);
+            objectOutputStream.flush();
+            objectOutputStream.close();
+
+            System.out.println("Bos size: " + byteOutputStream.size());
+            System.out.println("Bos to bytearray len: " + byteOutputStream.toByteArray().length);
+
+        } catch (IOException e)
+        {
+            shouldStop(true);
+
+            e.printStackTrace();
+        }
+    }
+
     public void backToLogin(ActionEvent event) throws IOException
     {
         stop();
@@ -101,7 +143,10 @@ public class Controller extends Client
         shouldStop(true);
         try
         {
-            connection.close();
+            if (connection != null)
+            {
+                connection.close();
+            }
         } catch (IOException e)
         {
             e.printStackTrace();
@@ -152,6 +197,13 @@ public class Controller extends Client
         }
 
         @Override
+        protected void processIncomingMessage(byte[] image)
+        {
+            model.setNewImage(image);
+            refreshImage();
+        }
+
+        @Override
         protected void informAboutAddingNewUser(String userName)
         {
             model.addUser(userName);
@@ -175,6 +227,53 @@ public class Controller extends Client
         private void refreshMessages()
         {
             messages.appendText(model.getNewMessage() + '\n');
+        }
+
+        private void refreshImage()
+        {
+            System.out.println("Refresh image: " + model.getNewImage().length);
+            File file;
+            FileOutputStream fileOutputStream = null;
+            BufferedOutputStream outputStream = null;
+
+            try
+            {
+                file = File.createTempFile("img", null);
+                fileOutputStream = new FileOutputStream(file);
+                outputStream = new BufferedOutputStream(fileOutputStream);
+
+                byte[] img = model.getNewImage();
+
+                outputStream.write(img, 0, img.length);
+
+                System.out.println(file.toString());
+                Image image = new Image(new FileInputStream(file));
+
+                ivImage.setImage(image);
+            } catch (IOException e)
+            {
+                e.printStackTrace();
+            }
+            finally
+            {
+                try
+                {
+                    if (fileOutputStream != null)
+                    {
+                        fileOutputStream.close();
+                    }
+                    if (outputStream != null)
+                    {
+                        outputStream.close();
+                    }
+                } catch (IOException e)
+                {
+                    e.printStackTrace();
+                }
+            }
+
+//            FileInputStream inputStream = new FileInputStream()
+//            ivImage.setImage();
         }
 
         private void refreshUsers()
