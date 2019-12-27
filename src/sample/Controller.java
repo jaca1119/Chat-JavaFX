@@ -246,6 +246,10 @@ public class Controller extends Client
 
                 outputStream.write(img, 0, img.length);
 
+                outputStream.flush();
+                fileOutputStream.close();
+                outputStream.close();
+
                 System.out.println(file.toString());
                 Image image = new Image(new FileInputStream(file));
 
@@ -254,26 +258,6 @@ public class Controller extends Client
             {
                 e.printStackTrace();
             }
-            finally
-            {
-                try
-                {
-                    if (fileOutputStream != null)
-                    {
-                        fileOutputStream.close();
-                    }
-                    if (outputStream != null)
-                    {
-                        outputStream.close();
-                    }
-                } catch (IOException e)
-                {
-                    e.printStackTrace();
-                }
-            }
-
-//            FileInputStream inputStream = new FileInputStream()
-//            ivImage.setImage();
         }
 
         private void refreshUsers()
