@@ -21,8 +21,8 @@ public class Server
 //        int port = ConsoleHelper.readInt();
         int port = 1025;
 
-        ServerSocket serverSocket = new ServerSocket(port, 10, InetAddress.getLocalHost());
-//        ServerSocket serverSocket = new ServerSocket(port);
+//        ServerSocket serverSocket = new ServerSocket(port, 10, InetAddress.getLocalHost());
+        ServerSocket serverSocket = new ServerSocket(port);
 
         //debug info
         ConsoleHelper.writeMessage("Server run info:");

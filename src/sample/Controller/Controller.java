@@ -14,6 +14,8 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
+import javafx.scene.text.Text;
+import javafx.scene.text.TextFlow;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import sample.Message.Message;
@@ -34,7 +36,7 @@ public class Controller extends Client
     private SocketThread socketThread;
 
     @FXML
-    private TextArea messages;
+    private TextFlow messagesFlow;
     @FXML
     private TextArea users;
     @FXML
@@ -47,8 +49,6 @@ public class Controller extends Client
     private Button btnArrow;
     @FXML
     private Button btnSendImage;
-    @FXML
-    private ImageView ivImage;
 
     public Controller()
     {
@@ -94,37 +94,39 @@ public class Controller extends Client
         File file = fileChooser.showOpenDialog(btnSendImage.getScene().getWindow());
 
         System.out.println(file);
-        byte[] imageInBytes = new byte[(int) file.length()];
-
-        try (FileInputStream inputStream = new FileInputStream(file);
-             BufferedInputStream bufferedInputStream = new BufferedInputStream(inputStream))
+        if (file != null)
         {
-//            ivImage.setImage(new Image(inputStream));
+            byte[] imageInBytes = new byte[(int) file.length()];
 
-            int length = bufferedInputStream.read(imageInBytes, 0, imageInBytes.length);
-            System.out.println("Image size in buff " + length);
-            System.out.println("Byte array size " + imageInBytes.length);
-            System.out.println("File length " + file.length());
+            try (FileInputStream inputStream = new FileInputStream(file);
+                 BufferedInputStream bufferedInputStream = new BufferedInputStream(inputStream))
+            {
 
-            connection.send(new Message(MessageType.IMAGE, imageInBytes));
+                int length = bufferedInputStream.read(imageInBytes, 0, imageInBytes.length);
+                System.out.println("Image size in buff " + length);
+                System.out.println("Byte array size " + imageInBytes.length);
+                System.out.println("File length " + file.length());
 
-            Message message = new Message(MessageType.IMAGE, imageInBytes);
+                connection.send(new Message(MessageType.IMAGE, imageInBytes));
 
-            ByteArrayOutputStream byteOutputStream = new ByteArrayOutputStream();
-            ObjectOutputStream objectOutputStream = new ObjectOutputStream(byteOutputStream);
+                Message message = new Message(MessageType.IMAGE, imageInBytes);
 
-            objectOutputStream.writeObject(message);
-            objectOutputStream.flush();
-            objectOutputStream.close();
+                ByteArrayOutputStream byteOutputStream = new ByteArrayOutputStream();
+                ObjectOutputStream objectOutputStream = new ObjectOutputStream(byteOutputStream);
 
-            System.out.println("Bos size: " + byteOutputStream.size());
-            System.out.println("Bos to bytearray len: " + byteOutputStream.toByteArray().length);
+                objectOutputStream.writeObject(message);
+                objectOutputStream.flush();
+                objectOutputStream.close();
 
-        } catch (IOException e)
-        {
-            shouldStop(true);
+                System.out.println("Bos size: " + byteOutputStream.size());
+                System.out.println("Bos to bytearray len: " + byteOutputStream.toByteArray().length);
 
-            e.printStackTrace();
+            } catch (IOException e)
+            {
+                shouldStop(true);
+
+                e.printStackTrace();
+            }
         }
     }
 
@@ -228,15 +230,29 @@ public class Controller extends Client
 
         private void refreshMessages()
         {
-            messages.appendText(model.getNewMessage() + '\n');
+            Platform.runLater(() -> messagesFlow.getChildren().add(new Text(model.getNewMessage() + "\n")));
         }
 
         private void refreshImage()
+        {
+            Image processedImage = processToOutputImage();
+            ImageView imageView = new ImageView(processedImage);
+
+            imageView.setFitWidth(300);
+            imageView.setPreserveRatio(true);
+            imageView.setSmooth(true);
+            imageView.setCache(true);
+
+            Platform.runLater(() -> messagesFlow.getChildren().addAll(new Text(getUserName() + ":\n"), imageView, new Text("\n")));
+        }
+
+        private Image processToOutputImage()
         {
             System.out.println("Refresh image: " + model.getNewImage().length);
             File file;
             FileOutputStream fileOutputStream = null;
             BufferedOutputStream outputStream = null;
+            Image image = null;
 
             try
             {
@@ -253,13 +269,14 @@ public class Controller extends Client
                 outputStream.close();
 
                 System.out.println(file.toString());
-                Image image = new Image(new FileInputStream(file));
+                image = new Image(new FileInputStream(file));
 
-                ivImage.setImage(image);
             } catch (IOException e)
             {
                 e.printStackTrace();
             }
+
+            return image;
         }
 
         private void refreshUsers()

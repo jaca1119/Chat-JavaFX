@@ -1,13 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.image.*?>
-<?import javafx.scene.shape.*?>
-<?import javafx.geometry.*?>
-<?import java.lang.*?>
 <?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
 <?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
 
-<GridPane xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.Controller.Controller">
+<GridPane xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.Controller.Controller">
    <columnConstraints>
       <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" />
    </columnConstraints>
@@ -18,14 +16,17 @@
       <AnchorPane prefHeight="720" prefWidth="720.0">
          <children>
             <TextArea fx:id="messageFromUser" layoutX="14.0" layoutY="567.0" onKeyPressed="#sendMessage" prefHeight="120.0" prefWidth="400.0" wrapText="true" />
-            <TextArea fx:id="messages" editable="false" layoutX="14.0" layoutY="14.0" prefHeight="520.0" prefWidth="400.0" wrapText="true" />
             <Button fx:id="sendMessage" layoutX="439.0" layoutY="572.0" mnemonicParsing="false" onAction="#buttonSendMessage" prefHeight="55.0" prefWidth="100.0" text="Send message" />
             <TextArea fx:id="users" editable="false" layoutX="439.0" layoutY="74.0" prefHeight="200.0" prefWidth="200.0" wrapText="true" />
             <Label layoutX="439.0" layoutY="57.0" text="Connected users:" />
             <CheckBox fx:id="checkBox" disable="true" layoutX="439.0" layoutY="314.0" mnemonicParsing="false" text="server connection..." />
             <Button fx:id="btnArrow" layoutX="639.0" layoutY="10.0" mnemonicParsing="false" onAction="#backToLogin" prefHeight="64.0" prefWidth="64.0" stylesheets="@../../css/style.css" />
             <Button fx:id="btnSendImage" layoutX="14.0" layoutY="542.0" mnemonicParsing="false" onAction="#sendImage" text="Send image" />
-            <ImageView fx:id="ivImage" fitHeight="150.0" fitWidth="200.0" layoutX="439.0" layoutY="360.0" pickOnBounds="true" preserveRatio="true" />
+            <ScrollPane layoutX="14.0" layoutY="42.0">
+               <content>
+                  <TextFlow fx:id="messagesFlow" prefHeight="484.0" prefWidth="400.0" />
+               </content>
+            </ScrollPane>
          </children>
       </AnchorPane>
    </children>
