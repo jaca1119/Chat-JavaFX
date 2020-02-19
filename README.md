@@ -6,7 +6,7 @@ The project include both server and client.
 
 #### If You want to connect to Your server from remote and You are behind router with NAT, then You have to add port forwarding on router. Then client use router (your) public IP
 
-#### If you have troubles with running JavaFX Main class, go to Edit configurations -> Insert thin in Main in VM options:  --module-path "C:\yourPathToJavaFX\lib" --add-modules javafx.controls,javafx.fxml
+#### If you have troubles with running JavaFX Main class, go to Edit configurations -> (Insert this in Main in VM options:)  _--module-path "yourPathToJavaFX\lib" --add-modules javafx.controls,javafx.fxml_
 
 ## Connecting to server
 ![Login](img/chat_login.png)
