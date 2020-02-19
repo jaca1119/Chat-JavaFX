@@ -14,7 +14,7 @@ public class Main extends Application {
         primaryStage.setTitle("Chat application");
 
         //scene1
-        Parent rootLogin = FXMLLoader.load(getClass().getResource("login.fxml"));
+        Parent rootLogin = FXMLLoader.load(getClass().getResource("View/login.fxml"));
         Scene loginScene = new Scene(rootLogin, 720, 720);
 
         primaryStage.setScene(loginScene);

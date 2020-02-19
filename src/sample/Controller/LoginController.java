@@ -1,4 +1,4 @@
-package sample;
+package sample.Controller;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -10,6 +10,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.scene.control.Tooltip;
 import javafx.stage.Stage;
+import sample.ServerConnection;
 
 import java.io.IOException;
 import java.util.Set;
@@ -47,7 +48,7 @@ public class LoginController
             Stage primaryStage = (Stage) ((Node) event.getSource()).getScene().getWindow();
 
             //scene2
-            Parent rootChat = FXMLLoader.load(getClass().getResource("sample.fxml"));
+            Parent rootChat = FXMLLoader.load(getClass().getResource("../View/sample.fxml"));
             Scene chatScene = new Scene(rootChat, 720, 720);
             chatScene.getStylesheets().add(getClass().getResource("/css/style.css").toExternalForm());
             primaryStage.setScene(chatScene);

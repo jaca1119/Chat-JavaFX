@@ -3,10 +3,9 @@ package sample.client;
 
 import sample.Connection;
 import sample.ConsoleHelper;
-import sample.Message;
-import sample.MessageType;
+import sample.Message.Message;
+import sample.Message.MessageType;
 
-import java.io.File;
 import java.io.IOException;
 import java.net.Socket;
 import java.util.Objects;

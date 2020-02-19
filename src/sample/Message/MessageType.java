@@ -1,4 +1,4 @@
-package sample;
+package sample.Message;
 
 public enum MessageType
 {

@@ -1,4 +1,4 @@
-package sample;
+package sample.Controller;
 
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
@@ -16,13 +16,15 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
+import sample.Message.Message;
+import sample.Message.MessageType;
+import sample.ServerConnection;
 import sample.client.Client;
 import sample.client.ClientGuiModel;
 
 
 import java.io.*;
 import java.util.Objects;
-import java.util.Set;
 
 
 public class Controller extends Client
@@ -131,7 +133,7 @@ public class Controller extends Client
         stop();
         Stage primaryStage = (Stage) ((Node) event.getSource()).getScene().getWindow();
 
-        Parent rootChat = FXMLLoader.load(getClass().getResource("login.fxml"));
+        Parent rootChat = FXMLLoader.load(getClass().getResource("../View/login.fxml"));
         Scene loginScene = new Scene(rootChat, 720, 720);
 
 

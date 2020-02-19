@@ -7,7 +7,7 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<GridPane xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.Controller">
+<GridPane xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.Controller.Controller">
    <columnConstraints>
       <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" />
    </columnConstraints>
@@ -23,7 +23,7 @@
             <TextArea fx:id="users" editable="false" layoutX="439.0" layoutY="74.0" prefHeight="200.0" prefWidth="200.0" wrapText="true" />
             <Label layoutX="439.0" layoutY="57.0" text="Connected users:" />
             <CheckBox fx:id="checkBox" disable="true" layoutX="439.0" layoutY="314.0" mnemonicParsing="false" text="server connection..." />
-            <Button fx:id="btnArrow" layoutX="639.0" layoutY="10.0" mnemonicParsing="false" onAction="#backToLogin" prefHeight="64.0" prefWidth="64.0" stylesheets="@../css/style.css" />
+            <Button fx:id="btnArrow" layoutX="639.0" layoutY="10.0" mnemonicParsing="false" onAction="#backToLogin" prefHeight="64.0" prefWidth="64.0" stylesheets="@../../css/style.css" />
             <Button fx:id="btnSendImage" layoutX="14.0" layoutY="542.0" mnemonicParsing="false" onAction="#sendImage" text="Send image" />
             <ImageView fx:id="ivImage" fitHeight="150.0" fitWidth="200.0" layoutX="439.0" layoutY="360.0" pickOnBounds="true" preserveRatio="true" />
          </children>

@@ -1,6 +1,5 @@
-package sample;
+package sample.Message;
 
-import java.io.File;
 import java.io.Serializable;
 
 public class Message implements Serializable
@@ -22,7 +21,7 @@ public class Message implements Serializable
         this.image = new byte[0];
     }
 
-    public Message(MessageType messageType,final byte[] image)
+    public Message(MessageType messageType, final byte[] image)
     {
         this.messageType = messageType;
         this.image = image;

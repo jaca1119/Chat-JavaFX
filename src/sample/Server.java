@@ -1,5 +1,8 @@
 package sample;
 
+import sample.Message.Message;
+import sample.Message.MessageType;
+
 import java.io.IOException;
 import java.net.InetAddress;
 import java.net.ServerSocket;
